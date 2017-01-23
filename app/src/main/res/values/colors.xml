@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="fitgrey">#626365</color>
+    <color name="fitgreen">#92D400</color>
+    <color name="fitQSblue">#009DF4</color>
+    <color name="fitQSmagenta">#E6007E</color>
+    <color name="fitQSorange">#EE7203</color>
+    <color name="fitlightblue">#55DDFF</color>
+    <color name="fitblue">#00AAD4</color>
+    <color name="fitlightred">#FF5858</color>
+    <color name="fitred">#D40000</color>
+    <color name="cdgreen">#004c00</color>
+</resources>

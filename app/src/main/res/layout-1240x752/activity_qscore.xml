@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <ImageView
+        android:layout_width="250px"
+        android:layout_height="150px"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/logo_fit20_s" />
+
+    <TextView
+        android:id="@+id/mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Rob"
+        android:textColor="@color/fitgrey"
+        android:textSize="60sp"
+        />
+
+    <TextView
+        android:id="@+id/machine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/mem_name"
+        android:layout_below="@id/mem_name"
+        android:layout_marginTop="20dp"
+        android:text="Lat Pull"
+        android:textColor="@color/fitgrey"
+        android:textSize="60sp"
+        />
+
+    <TextView
+        android:id="@+id/qscore"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textColor="@color/fitgrey"
+        android:textSize="90sp"
+        android:text="QualityScores"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/qscore"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="80sp"
+        android:textColor="@color/fitgreen"
+        android:text="@string/total"/>
+
+    <TextView
+        android:id="@+id/qs_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/qscore"
+        android:textColor="@color/fitgreen"
+        android:layout_marginTop="70dp"
+        android:textStyle="bold"
+        android:textSize="120sp"
+        android:text="10"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="130dp"
+        android:textSize="70sp"
+        android:textColor="@color/fitQSmagenta"
+        android:textStyle="bold"
+        android:text="@string/metronome"
+        />
+
+    <TextView
+        android:id="@+id/metronome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="100dp"
+        android:textSize="100sp"
+        android:textColor="@color/fitQSmagenta"
+        android:textStyle="bold"
+        android:text="20"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="130dp"
+        android:textSize="70sp"
+        android:textColor="@color/fitQSblue"
+        android:textStyle="bold"
+        android:text="@string/steady"/>
+
+    <TextView
+        android:id="@+id/steady"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="100dp"
+        android:textSize="100sp"
+        android:textColor="@color/fitQSblue"
+        android:textStyle="bold"
+        android:text="40"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="130dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="70dp"
+        android:textSize="70sp"
+        android:textColor="@color/fitQSorange"
+        android:textStyle="bold"
+        android:text="@string/range"/>
+
+    <TextView
+        android:id="@+id/range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="100dp"
+        android:textSize="100sp"
+        android:textColor="@color/fitQSorange"
+        android:textStyle="bold"
+        android:text="56"/>
+
+</RelativeLayout>

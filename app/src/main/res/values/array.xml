@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="machines">
+        <item>Lat Pulldown</item>
+        <item>Leg Press</item>
+        <item>Hip Abductor/Adduction</item>
+        <item>Chest Press</item>
+		<item>Abdominal Crunch</item>
+		<item>Low Back</item>
+		<item>Rotary Torso</item>
+    </string-array>
+</resources>

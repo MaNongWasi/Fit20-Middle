@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+    >
+
+    <ImageView
+        android:layout_width="250px"
+        android:layout_height="150px"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/logo_fit20_s"/>
+
+    <TextView
+        android:id="@+id/mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/fitgrey"
+        android:textSize="60sp"
+        android:text="Rob" />
+
+    <TextView
+        android:id="@+id/machine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/mem_name"
+        android:layout_below="@id/mem_name"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:textColor="@color/fitgrey"
+        android:textSize="60sp"
+        android:text="Lat Pull"/>
+
+    <TextView
+        android:id="@+id/ref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/machine_name"
+        android:layout_marginTop="180dp"
+        android:textColor="@color/fitgrey"
+        android:textSize="60sp"
+        android:text="@string/ref"/>
+
+    <TextView
+        android:id="@+id/jij"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ref"
+        android:layout_marginTop="50dp"
+        android:layout_alignRight="@id/ref"
+        android:textColor="@color/fitgrey"
+        android:singleLine="true"
+        android:textSize="60sp"
+        android:text="@string/jij"/>
+
+    <ImageView
+        android:id="@+id/line1"
+        android:layout_width="50dp"
+        android:layout_height="300dp"
+        android:layout_below="@id/machine_name"
+        android:layout_marginTop="150dp"
+        android:layout_toRightOf="@id/ref"
+        android:layout_marginLeft="30dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/line"/>
+
+    <ProgressBar
+        android:id="@+id/ref_pb"
+        android:layout_width="894dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/machine_name"
+        android:layout_marginTop="180dp"
+        android:layout_toRightOf="@id/ref"
+        android:layout_marginLeft="45dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/pb_ref"
+        android:max="1000"
+        android:progress="0" />
+
+    <ProgressBar
+        android:id="@+id/mem_pb"
+        android:layout_width="894dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/ref_pb"
+        android:layout_marginTop="50dp"
+        android:layout_alignLeft="@id/ref_pb"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/pb_normal"
+        android:max="1000"
+        android:progress="1000" />
+
+    <ProgressBar
+        android:id="@+id/cal_min_pb"
+        android:layout_width="40dp"
+        android:layout_height="90dp"
+        android:layout_alignTop="@id/mem_pb"
+        android:layout_toLeftOf="@id/mem_pb"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/pb_min_normal"
+        android:max="100"
+        android:progress="0"
+        />
+
+    <ProgressBar
+        android:id="@+id/cal_max_pb"
+        android:layout_width="40dp"
+        android:layout_height="90dp"
+        android:layout_alignTop="@id/mem_pb"
+        android:layout_toRightOf="@id/mem_pb"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/pb_normal"
+        android:max="100"
+        android:progress="0"
+        />
+
+    <ImageView
+        android:id="@+id/line2"
+        android:layout_width="50dp"
+        android:layout_height="300dp"
+        android:layout_alignTop="@id/line1"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/line"/>
+
+    <ImageView
+        android:id="@+id/line3"
+        android:layout_width="50dp"
+        android:layout_height="300dp"
+        android:layout_alignTop="@id/line1"
+        android:layout_toRightOf="@id/line2"
+        android:layout_marginLeft="435dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/line"/>
+
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/line2"
+        android:layout_marginBottom="30dp"
+        android:textSize="120sp"
+        android:textColor="@color/fitgrey"
+        android:textStyle="bold"
+        android:text="5"/>
+
+    <TextView
+        android:id="@+id/count_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:textSize="250sp"
+        android:textColor="@color/fitgreen"
+        android:textStyle="bold"
+        android:text="3"
+        />
+
+    <com.example.vtec.fit20.myTextView
+        android:id="@+id/cd_station"
+        android:layout_width="280dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/cd_im"-->
+        <!--android:layout_width="400dp"-->
+        <!--android:layout_height="400dp"-->
+        <!--android:layout_marginLeft="400dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginBottom="60dp"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/nine"/>-->
+
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Fit 20</string>
+    <string name="ref">Ref</string>
+    <string name="jij">Jij</string>
+    <string name="total">Total</string>
+    <string name="steady">Steady</string>
+    <string name="range">Range</string>
+    <string name="metronome">Metronome</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+</resources>
