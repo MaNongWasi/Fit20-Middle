@@ -163,7 +163,7 @@
         android:text="3"
         />
 
-    <com.example.vtec.fit20.myTextView
+    <TextView
         android:id="@+id/cd_station"
         android:layout_width="280dp"
         android:layout_height="250dp"

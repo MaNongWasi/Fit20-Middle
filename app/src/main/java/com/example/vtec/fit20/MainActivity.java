@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Socket mSocket;
     private JSONObject jObject, data;
     private String api = "";
+    // TODO ? assuming a way to keep track of views via current view
     private String current_view, main_v = "Main", free_v = "Free", qs_v = "QS";
     private myTextView cd_station;
 
@@ -76,21 +77,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init_main_ui() {
+        // Set the first view "main"
         setContentView(R.layout.activity_main);
         current_view = main_v;
         init_ui();
     }
 
     public void init_val() {
+        // getting all the default values from the values>array folder
         machine_list = getResources().getStringArray(R.array.machines);
+        //TODO ? what is this doing
         sharedPreferences = getSharedPreferences(Config.SHARED_MACHINE_NAME, Context.MODE_PRIVATE);
+        // getString gets string with a machine name else gets Unknown
         machineName = sharedPreferences.getString(Config.SHARED_MACHINE_NAME, Config.TAG_UNKNOWN);
         if (machineName.equals(Config.TAG_UNKNOWN)) {
+            // machine Name was not found
             machine_dialog();
         }
     }
 
     public void init_ui() {
+        // Gets all the attributes from the views
         ref_pb = (ProgressBar) findViewById(R.id.ref_pb);
         mem_pb = (ProgressBar) findViewById(R.id.mem_pb);
         time_tv = (TextView) findViewById(R.id.time_tv);
@@ -102,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         cd_station = (myTextView)findViewById(R.id.cd_station);
 //        cd_im = (ImageView) findViewById(R.id.cd_im);
 
+        // These are for drawing the bars TODO maybe can look into improving it
         pb_normal = getResources().getDrawable(R.drawable.pb_normal);
         pb_slow = getResources().getDrawable(R.drawable.pb_slow);
         pb_slower = getResources().getDrawable(R.drawable.pb_slower);
@@ -118,14 +126,16 @@ public class MainActivity extends AppCompatActivity {
         pb_max_fast = getResources().getDrawable(R.drawable.pb_max_fast);
         pb_max_faster = getResources().getDrawable(R.drawable.pb_max_faster);
 
+        // setting machineName on view
         machinename_tv.setText(machineName);
-
+        // Listens for a click to change it ? TODO: not this, or not here maybe in the intial page.
         machinename_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 password_dialog();
             }
         });
+
         cd_tv.setVisibility(View.INVISIBLE);
         cd_station.setVisibility(View.INVISIBLE);
 //        cd_im.setVisibility(View.INVISIBLE);
@@ -141,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         steady_tv = (TextView) findViewById(R.id.steady);
         range_tv = (TextView) findViewById(R.id.range);
     }
+
 
     public void init_free_ui() {
         setContentView(R.layout.activity_free);
@@ -158,12 +169,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void init_sockt() {
+        // Initialize sockets
         try {
-//            mSocket = IO.socket("http://192.168.0.127:8001/livedata");
-            System.out.println("fianl api " + api);
+//          mSocket = IO.socket("http://192.168.0.127:8001/livedata");
+            System.out.println("final api " + api);
             String url = "http://" + api + ":8001/livedata";
             mSocket = IO.socket(url);
-
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -177,28 +188,39 @@ public class MainActivity extends AppCompatActivity {
         mSocket.on("live_data", onEventRecieved);
     }
 
+
     public void machine_dialog() {
+        // shows a dialog for machine name setting , installation procedure
         final Dialog dialog = new Dialog(MainActivity.this);
+        // set the content to a dialog view
         dialog.setContentView(R.layout.dialog);
         dialog.setTitle(Config.MACHINE_NAME);
+        // bind the ok and cancel button
         Button ok_bt = (Button) dialog.findViewById(R.id.ok);
         Button cancel_bt = (Button) dialog.findViewById(R.id.cancel);
+        // Content.. this is machine name..
         final AutoCompleteTextView machine_et = (AutoCompleteTextView) dialog.findViewById(R.id.input_et);
-        ArrayAdapter machine_adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, machine_list);
+        // get the array of choices, here machine_list is the list of machines and display it
+        // simple_list_item_1 is the layout view element
+        ArrayAdapter machine_adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, machine_list);
+
         machine_et.setAdapter(machine_adapter);
         machine_et.setThreshold(0); //input 0 character to display hint
+
+        // add on click listener to set and close dialog
         ok_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // set the Machine name
                 machineName = machine_et.getText().toString();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(Config.SHARED_MACHINE_NAME, machineName);
+                editor.apply();
                 editor.commit();
                 dialog.dismiss();
             }
         });
         cancel_bt.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -207,17 +229,24 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    // Shows a dialog for inputing your ip address
     public void ip_dialog() {
+        // custom dialog set for IP address handling
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.dialog);
         dialog.setTitle("IP Address");
+
+        // content , bind the button
         Button ok_bt = (Button) dialog.findViewById(R.id.ok);
         Button cancel_bt = (Button) dialog.findViewById(R.id.cancel);
+
+        // TODO ? autocomplete a ip ?
         final AutoCompleteTextView ip_et = (AutoCompleteTextView) dialog.findViewById(R.id.input_et);
         ip_et.setInputType(InputType.TYPE_CLASS_NUMBER);
         ok_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO ? error handling what if ip address is wrong ?
                 api += ip_et.getText().toString();
                 dialog.dismiss();
                 init_sockt();
@@ -234,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void password_dialog() {
+        // TODO: A secret password dialog for changing machine ? is needed?
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.dialog);
         dialog.setTitle(Config.PASSWORD);
@@ -249,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                     machine_dialog();
                 } else {
                     dialog.dismiss();
-                    Toast.makeText(MainActivity.this, "Password incorrect. Please try again!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Password incorrect. Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -270,7 +300,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        System.out.println("destory");
+        // executed in the end of the view/app
+        System.out.println("Closing Application");
         this.mWakeLock.release();
         disconnect_socket();
         super.onDestroy();
@@ -279,33 +310,40 @@ public class MainActivity extends AppCompatActivity {
     private Emitter.Listener onConnectMsg = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
+            //TODO Emmitter ? Sockets.
             System.out.println("Emitter invoked");
-
             System.out.println("onConnect msg : " + args);
         }
     };
 
+    // This is the webscoket listener for live data
     private Emitter.Listener onEventRecieved = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-
-//
+            // TODO? debug? prints all arguments
             for (int i = 0; i < args.length; i++) {
-                System.out.println("received masg : " + i + " " + args[i]);
+                System.out.println("received msg : " + i + " " + args[i]);
             }
             try {
+                // capture json object
                 jObject = (JSONObject) args[0];
+                // just captures data array from the json list
                 data = jObject.getJSONObject(Config.TAG_DATA);
+                // checks for state in the data
                 state = data.getString(Config.TAG_STATE);
+                // print states {IDLE, START, STATIONARY, STOP}
                 System.out.println("state " + state);
+                // if stopped and
                 if (state.equals(Config.TAG_STOP) && current_view.equals(main_v)) {
                     Message msg = new Message();
                     msg.what = STOP;
                     handler.sendMessage(msg);
 
                 } else if (state.equals(Config.TAG_START)) {
+                    // get countdown
                     count_down = data.getInt(Config.TAG_CD);
 
+                    //
                     if (!current_view.equals(main_v)) {
                         Message msg = new Message();
                         msg.what = START;
@@ -390,7 +428,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
     public void handle_data(JSONObject data, int state) {
+        // Progress bar handler
         try {
             refVal = data.getDouble(Config.TAG_REF_VAL) * Config.BASE_VAL;
             timeVal = data.getDouble(Config.TAG_REAL_TIME);
@@ -459,6 +499,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void disconnect_socket() {
+        // disconnect socket connection
         mSocket.disconnect();
         mSocket.off(Socket.EVENT_CONNECT, onConnect);
         mSocket.off(Socket.EVENT_DISCONNECT, onDisconnect);
@@ -467,11 +508,11 @@ public class MainActivity extends AppCompatActivity {
         mSocket.off("live_data", onEventRecieved);
     }
 
-
+ // Emmitters are event handlers for socket specific events
     private Emitter.Listener onDisconnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            System.out.println("disconnect ");
+            System.out.println("disconnected ");
 //            isConnected = false;
         }
     };

@@ -11,57 +11,27 @@
         android:layout_width="250px"
         android:layout_height="150px"
         android:layout_alignParentRight="true"
-        android:src="@drawable/logo_fit20_s" />
-
-    <TextView
-        android:id="@+id/mem_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="Rob"
-        android:textColor="@color/fitgrey"
-        android:textSize="60sp"
-        />
-
-    <TextView
-        android:id="@+id/machine_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/mem_name"
-        android:layout_below="@id/mem_name"
-        android:layout_marginTop="20dp"
-        android:text="Lat Pull"
-        android:textColor="@color/fitgrey"
-        android:textSize="60sp"
-        />
-
-    <TextView
-        android:id="@+id/qscore"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textColor="@color/fitgrey"
-        android:textSize="70sp"
-        android:text="QualityScores"/>
+        android:src="@drawable/logo_fit20_s"
+        android:id="@+id/imageView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/qscore"
+        android:layout_below="@+id/qscore"
         android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:textSize="60sp"
         android:textColor="@color/fitgreen"
-        android:text="@string/total"/>
+        android:text="@string/total"
+        android:id="@+id/textView3" />
 
     <TextView
         android:id="@+id/qs_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/qscore"
+        android:layout_below="@+id/qscore"
         android:textColor="@color/fitgreen"
         android:layout_marginTop="70dp"
         android:textStyle="bold"
@@ -73,11 +43,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="80dp"
-        android:textSize="50sp"
+        android:textSize="46sp"
         android:textColor="@color/fitQSmagenta"
         android:textStyle="bold"
         android:text="@string/metronome"
-        />
+        android:id="@+id/textView4" />
 
     <TextView
         android:id="@+id/metronome"
@@ -100,7 +70,8 @@
         android:textSize="50sp"
         android:textColor="@color/fitQSblue"
         android:textStyle="bold"
-        android:text="@string/steady"/>
+        android:text="@string/steady"
+        android:id="@+id/textView" />
 
     <TextView
         android:id="@+id/steady"
@@ -116,19 +87,6 @@
         android:text="75"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="80dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="70dp"
-        android:textSize="50sp"
-        android:textColor="@color/fitQSorange"
-        android:textStyle="bold"
-        android:text="@string/range"/>
-
-    <TextView
         android:id="@+id/range"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -141,5 +99,50 @@
         android:textColor="@color/fitQSorange"
         android:textStyle="bold"
         android:text="72"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="70dp"
+        android:textSize="50sp"
+        android:textColor="@color/fitQSorange"
+        android:textStyle="bold"
+        android:text="@string/range"
+        android:id="@+id/textView2"
+        android:layout_marginStart="40dp"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_toEndOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/machine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lat Pull"
+        android:textColor="@color/fitgrey"
+        android:textSize="60sp"
+        android:layout_alignBottom="@+id/qscore"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/qscore"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/fitgrey"
+        android:textSize="70sp"
+        android:text="QualityScores"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/range" />
+
+    <TextView
+        android:id="@+id/mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rob"
+        android:textColor="@color/fitgrey"
+        android:textSize="60sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

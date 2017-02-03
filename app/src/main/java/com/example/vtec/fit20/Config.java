@@ -4,6 +4,7 @@ package com.example.vtec.fit20;
  * Created by VTEC on 12/9/2016.
  */
 public class Config {
+    //TODO many are not static do we need it?
     public static final String url_apiHost = "/api/fit20/1.0/";
     public static final String url_get_data = url_apiHost + "sessionmanager/Lat%20Pull%20Down";
     public static final String url_get_qscore = url_apiHost + "qualityscore/Lat%20Pull%20Down";
@@ -21,7 +22,7 @@ public class Config {
     public static final String TAG_CAL_MAX = "calibration_max";
     public static final String TAG_CAL_MIN = "calibration_min";
     public static final String TAG_STATE = "state";
-    public static final String TAG_DONE = "DONE";
+    public static final String TAG_IDLE = "IDLE";
     public static final String TAG_STOP = "STOP";
     public static final String TAG_START = "START";
     public static final String TAG_PAUSE = "PAUSE";
