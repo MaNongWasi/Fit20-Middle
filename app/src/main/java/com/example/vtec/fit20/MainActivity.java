@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mSocket.connect();
         mSocket.on("connect", onConnectMsg);
-
         mSocket.on(Socket.EVENT_CONNECT, onConnect);// 连接成功
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);// 断开连接
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);// 连接异常
@@ -316,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    // This is the webscoket listener for live data
+    // This is the websocket listener for live data
     private Emitter.Listener onEventRecieved = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -333,17 +332,17 @@ public class MainActivity extends AppCompatActivity {
                 state = data.getString(Config.TAG_STATE);
                 // print states {IDLE, START, STATIONARY, STOP}
                 System.out.println("state " + state);
-                // if stopped and
-                if (state.equals(Config.TAG_STOP) && current_view.equals(main_v)) {
+                // if stopped and view is the idle view
+                if (state.equals(Config.TAG_IDLE) && current_view.equals(main_v)) {
                     Message msg = new Message();
                     msg.what = STOP;
                     handler.sendMessage(msg);
-
-                } else if (state.equals(Config.TAG_START)) {
+                }
+                // if exercise is not started yet but has been created or has been started
+                else if (state.equals(Config.TAG_INIT) || state.equals(Config.TAG_START)) {
                     // get countdown
                     count_down = data.getInt(Config.TAG_CD);
-
-                    //
+                    // check if main view and go to start
                     if (!current_view.equals(main_v)) {
                         Message msg = new Message();
                         msg.what = START;
@@ -366,6 +365,18 @@ public class MainActivity extends AppCompatActivity {
                     msg.what = COUNT_DOWN_STATION;
                     msg.obj = data;
                     handler.sendMessage(msg);
+                } else if (state.equals(Config.TAG_STOP)){
+                    Message msg = new Message();
+                    msg.what = STOP;
+                    handler.sendMessage(msg);
+                }
+
+                // see if exercise is complete
+                else if(state.equals(Config.TAG_COMPLETE)) {
+                    Message msg = new Message();
+                    msg.what = IDLE;
+                    handler.sendMessage(msg);
+                    System.out.print("Exercise Complete");
                 }
 
             } catch (JSONException e) {
@@ -381,16 +392,20 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    // constant denoting the states of the machine
     private static final int COUNT_DOWN_START = 0;
     private static final int COUNT_DOWN_STATION = 1;
     private static final int START = 2;
     private static final int UPDATE = 3;
     private static final int STOP = 4;
     private static final int ERROR = 5;
+    private static final int IDLE = 6;
+
 
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            // check for Message containing states defined above
             if (msg.what == COUNT_DOWN_START) {
                 time_tv.setVisibility(View.INVISIBLE);
                 cd_tv.setVisibility(View.VISIBLE);
@@ -417,12 +432,13 @@ public class MainActivity extends AppCompatActivity {
                 data = (JSONObject) msg.obj;
                 handle_data(data , UPDATE);
 
-
-            } else if (msg.what == STOP) {
+            } else if (msg.what == IDLE) {
                 init_free_ui();
+            }else if (msg.what == STOP) {
+                init_qs_ui();
             } else if (msg.what == ERROR) {
                 String toast_str = (String) msg.obj;
-                Toast.makeText(MainActivity.this, toast_str, Toast.LENGTH_LONG);
+                Toast.makeText(MainActivity.this, toast_str, Toast.LENGTH_LONG).show();
                 init_free_ui();
             }
         }

@@ -23,8 +23,10 @@ public class Config {
     public static final String TAG_CAL_MIN = "calibration_min";
     public static final String TAG_STATE = "state";
     public static final String TAG_IDLE = "IDLE";
-    public static final String TAG_STOP = "STOP";
+    public static final String TAG_INIT = "INIT";
     public static final String TAG_START = "START";
+    public static final String TAG_STOP = "STOP";
+    public static final String TAG_COMPLETE = "COMPLETE";
     public static final String TAG_PAUSE = "PAUSE";
     public static final String TAG_STATION = "STATIONARY";
     public static final String TAG_QS = "qscore";
