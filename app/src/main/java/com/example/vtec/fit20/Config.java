@@ -25,6 +25,7 @@ public class Config {
     public static final String TAG_IDLE = "IDLE";
     public static final String TAG_INIT = "INIT";
     public static final String TAG_START = "START";
+    public static final String TAG_RUNNING = "RUNNING";
     public static final String TAG_STOP = "STOP";
     public static final String TAG_COMPLETE = "COMPLETE";
     public static final String TAG_PAUSE = "PAUSE";

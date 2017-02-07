@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.JsonReader;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -30,8 +32,15 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.net.URISyntaxException;
+
+// loopj for RESTful requests
+import com.loopj.android.http.*;
+
+import cz.msebera.android.httpclient.Header;
+
 
 public class MainActivity extends AppCompatActivity {
     protected PowerManager.WakeLock mWakeLock;
@@ -150,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
         metronome_tv = (TextView) findViewById(R.id.metronome);
         steady_tv = (TextView) findViewById(R.id.steady);
         range_tv = (TextView) findViewById(R.id.range);
+        // TODO change here for qs studio and machines
+        getQualityScore(1,1);
+
     }
 
 
@@ -339,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
                     handler.sendMessage(msg);
                 }
                 // if exercise is not started yet but has been created or has been started
-                else if (state.equals(Config.TAG_INIT) || state.equals(Config.TAG_START)) {
+                else if (state.equals(Config.TAG_INIT) || state.equals(Config.TAG_START) || state.equals(Config.TAG_RUNNING)) {
                     // get countdown
                     count_down = data.getInt(Config.TAG_CD);
                     // check if main view and go to start
@@ -436,6 +448,8 @@ public class MainActivity extends AppCompatActivity {
                 init_free_ui();
             }else if (msg.what == STOP) {
                 init_qs_ui();
+                // TODO check for real machine id and studio CHANGE THIS ASAP
+                getQualityScore(1,1);
             } else if (msg.what == ERROR) {
                 String toast_str = (String) msg.obj;
                 Toast.makeText(MainActivity.this, toast_str, Toast.LENGTH_LONG).show();
@@ -568,6 +582,46 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    // method to get quality score data
+
+    public void setQualityScore(JSONArray exercise_data){
+        try {
+            // extract the data out
+            String exerciseID = (exercise_data.getJSONObject(1)).getString("exercise");
+            String qualityScore = (exercise_data.getJSONObject(2)).getString("qs");
+            String metronomeVal = (exercise_data.getJSONObject(3)).getString("metronome");
+            String steadyVal = (exercise_data.getJSONObject(4)).getString("steady");
+            String rangeVal = (exercise_data.getJSONObject(5)).getString("range");
+            metronome_tv.setText(metronomeVal);
+            qs_tv.setText(qualityScore);
+            steady_tv.setText(steadyVal);
+            range_tv.setText(rangeVal);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getQualityScore(int studio,int machine){
+        // TODO where to get studio and machine from
+        String gatewayURL = "http://"+api+":8001/fit20/v1.0/studios/"+studio+"/machines/"+machine+"/members/1/userdata";
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(gatewayURL, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                setQualityScore(response);
+//                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+//                System.out.print(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Toast.makeText(getApplicationContext(), "Error showing quality score", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
 
