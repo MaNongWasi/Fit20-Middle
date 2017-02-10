@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.engineio.client.transports.WebSocket;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
@@ -41,6 +42,9 @@ import com.loopj.android.http.*;
 
 import cz.msebera.android.httpclient.Header;
 
+// for crash reports on the package distributer hockeyApp
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
 
 public class MainActivity extends AppCompatActivity {
     protected PowerManager.WakeLock mWakeLock;
@@ -82,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
         init_free_ui();
         ip_dialog();
 //        init_sockt();
+
+        // from hockeyApp check for updates
+        checkForUpdates();
 
     }
 
@@ -179,14 +186,25 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
+    // websocket options
+    IO.Options createOptions() {
+        IO.Options opts = new IO.Options();
+        opts.forceNew = true;
+        return opts;
+    }
 
     private void init_sockt() {
         // Initialize sockets
         try {
+            // set options for the socket to ensure websocket
+            IO.Options opts = createOptions();
+            opts.transports = new String[] {WebSocket.NAME};
+
 //          mSocket = IO.socket("http://192.168.0.127:8001/livedata");
             System.out.println("final api " + api);
             String url = "http://" + api + ":8001/livedata";
-            mSocket = IO.socket(url);
+            // start socket at the url and with options
+            mSocket = IO.socket(url, opts);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -307,6 +325,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // hockeymanager for app logs
+        checkForCrashes();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterManagers();
     }
 
     @Override
@@ -316,6 +343,9 @@ public class MainActivity extends AppCompatActivity {
         this.mWakeLock.release();
         disconnect_socket();
         super.onDestroy();
+        // run hockeymanager
+        unregisterManagers();
+
     }
 
     private Emitter.Listener onConnectMsg = new Emitter.Listener() {
@@ -622,6 +652,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // hockey app methods for distributions
+
+    private void checkForCrashes() {
+        CrashManager.register(this);
+    }
+
+    private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this);
+    }
+
+    private void unregisterManagers() {
+        UpdateManager.unregister();
+    }
+
 
 }
 

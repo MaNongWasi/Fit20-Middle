@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "861825340b24493f9381bfb83d0c5b63"]
     }
     buildTypes {
         release {
@@ -24,6 +25,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
     //    compile project(":volley")
-    compile 'com.github.nkzawa:socket.io-client:0.3.0'
+    compile ('com.github.nkzawa:socket.io-client:0.3.0'){
+        exclude group: 'org.json', module: 'json'
+    }
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'net.hockeyapp.android:HockeySDK:4.1.1'
+    // Socket library wAsync
+    compile 'org.atmosphere:wasync:2.1.3'
 }

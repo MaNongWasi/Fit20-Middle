@@ -1,22 +1,47 @@
 package com.example.vtec.fit20;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
-import com.loopj.android.http.*;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+
+import com.github.nkzawa.engineio.client.Transport;
+import com.github.nkzawa.engineio.client.transports.WebSocket;
+import com.github.nkzawa.socketio.client.Manager;
+import com.loopj.android.http.*;
+
+//import org.atmosphere.wasync.Client;
+//import org.atmosphere.wasync.ClientFactory;
+//import org.atmosphere.wasync.OptionsBuilder;
+//import org.atmosphere.wasync.Request;
+//import org.atmosphere.wasync.Function;
+//import org.atmosphere.wasync.RequestBuilder;
+//import org.atmosphere.wasync.Socket;
+//import org.atmosphere.wasync.Event;
+//import org.atmosphere.wasync.Decoder;
+//import org.atmosphere.wasync.Encoder;
+
+//import cz.msebera.android.httpclient.Header;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
 import static android.R.attr.data;
-
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class test_saujan extends AppCompatActivity {
     private JSONObject jObject;
@@ -61,7 +86,8 @@ public class test_saujan extends AppCompatActivity {
             btnGetJSONData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                getQualityScore(STUDIO_ID, MACHINE_ID);
+//                getQualityScore(STUDIO_ID, MACHINE_ID);
+                    testWebSocket();
                 }
             });
         }
@@ -84,26 +110,26 @@ public class test_saujan extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    public void getQualityScore(int studio,int machine){
-        String gatewayURL = "http://192.168.0.134:8001/fit20/v1.0/studios/"+studio+"/machines/"+machine+"/members/1/userdata";
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(gatewayURL, new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                setQualityScore(response);
-                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                System.out.print(response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), "We got an error", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//
+//    public void getQualityScore(int studio,int machine){
+//        String gatewayURL = "http://192.168.0.134:8001/fit20/v1.0/studios/"+studio+"/machines/"+machine+"/members/1/userdata";
+//        AsyncHttpClient client = new AsyncHttpClient();
+//        client.get(gatewayURL, new JsonHttpResponseHandler() {
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                setQualityScore(response);
+//                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+//                System.out.print(response);
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                super.onFailure(statusCode, headers, responseString, throwable);
+//                Toast.makeText(getApplicationContext(), "We got an error", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
 //    public void getQualityScore(int studio,int machine){
 //        String gatewayURL = "http://192.168.0.109:8001/fit20/v1.0/studios/"+studio+"/machines/"+machine;
@@ -123,5 +149,93 @@ public class test_saujan extends AppCompatActivity {
 //            }
 //        });
 //    }
+
+
+    // socket
+    private String serverIpAddress = "http://192.168.0.134:8001";
+//    private String serverIpAddress = "http://192.168.0.134:8001/livedata";
+    public static final String EVENT_CONNECT = "connect";
+
+    // socket test
+    public void testWebSocket(){
+//
+//        // Will start websockets here
+//        // get a Default client from wasync, works with all framework of websocket
+//        try{
+//        Client client = ClientFactory.getDefault().newClient();
+//
+//        RequestBuilder request = client.newRequestBuilder()
+//                .method(Request.METHOD.GET)
+//                .uri(serverIpAddress)
+////                .transport(Request.TRANSPORT.WEBSOCKET)
+//                .transport(Request.TRANSPORT.LONG_POLLING);
+//
+////        OptionsBuilder build = client.newOptionsBuilder();
+////        build.requestTimeoutInSeconds(2);
+//
+//        Socket socket_test = client.create();
+//        socket_test.on(Event.OPEN, new Function<String>() {
+//            @Override
+//            public void on(String t){
+//                System.out.println("Socket connected");
+//            }
+//        }).open(request.build());
+//        } catch (Throwable e){
+////            e.printStackTrace();
+//        }
+
+
+
+        // Socket IO  Here ****************************
+
+        try {
+            IO.Options opts = createOptions();
+            opts.transports = new String[] {WebSocket.NAME};
+            Socket test_socket = IO.socket(serverIpAddress, opts);
+            test_socket.on(Socket.EVENT_CONNECT, onConnectMsg);
+//            test_socket.on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
+//                @Override
+//                public void call(Object... args) {
+//                    Transport transport = (Transport)args[0];
+//                    transport.on(Transport.EVENT_REQUEST_HEADERS, new Emitter.Listener() {
+//                        @Override
+//                        public void call(Object... args) {
+//                            @SuppressWarnings("unchecked")
+//                            Map<String, List<String>> headers = (Map<String, List<String>>)args[0];
+//                            headers.put("X-SocketIO", Arrays.asList("hi"));
+//                        }
+//                    }).on(Transport.EVENT_RESPONSE_HEADERS, new Emitter.Listener() {
+//                        @Override
+//                        public void call(Object... args) {
+//                            @SuppressWarnings("unchecked")
+//                            Map<String, List<String>> headers = (Map<String, List<String>>)args[0];
+//                            List<String> value = headers.get("X-SocketIO");
+//                            values.offer(value != null ? value.get(0) : "");
+//                        }
+//                    });
+//                }
+//            });
+            test_socket.connect();
+            test_socket.close();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+        IO.Options createOptions() {
+            IO.Options opts = new IO.Options();
+            opts.forceNew = true;
+            return opts;
+        }
+
+
+    private Emitter.Listener onConnectMsg = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            //TODO Emmitter ? Sockets.
+            System.out.println("Emitter invoked");
+            System.out.println("onConnect msg : " + args);
+        }
+    };
 
 }
