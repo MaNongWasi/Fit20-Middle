@@ -8,8 +8,8 @@ android {
         applicationId "com.example.vtec.fit20"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.5.1"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "861825340b24493f9381bfb83d0c5b63"]
     }
     buildTypes {
@@ -30,6 +30,4 @@ dependencies {
     }
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'net.hockeyapp.android:HockeySDK:4.1.1'
-    // Socket library wAsync
-    compile 'org.atmosphere:wasync:2.1.3'
 }
